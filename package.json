@@ -1,0 +1,29 @@
+{
+  "name": "wax-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "go run cmd/main.go",
+    "dev:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --watch",
+    "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luke-hiiot/wax-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luke-hiiot/wax-demo/issues"
+  },
+  "homepage": "https://github.com/luke-hiiot/wax-demo#readme",
+  "dependencies": {
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.17"
+  }
+}
