@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "go run cmd/main.go",
+    "dev": " lsof -ti:3000 | xargs -r kill -9 && go run cmd/main.go",
     "dev:css": "tailwindcss -i ./src/app/globals.css -o ./public/styles.css --watch",
     "build:css": "tailwindcss -i ./src/app/globals.css -o ./public/styles.css --minify",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,5 +25,6 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.17"
-  }
+  },
+  "packageManager": "pnpm"
 }

@@ -1,6 +1,7 @@
 import Layout from "./layout";
 import FruitList from "../components/FruitList";
 import RecentMessages from "../components/RecentMessages";
+import InteractiveCounter from "../components/InteractiveCounter";
 
 export default function Page(model: {
     name: string,
@@ -35,6 +36,7 @@ export default function Page(model: {
             <section class="grid gap-4 md:grid-cols-2">
                 <FruitList />
                 <RecentMessages recentMessages={model.recentMessages} />
+                <InteractiveCounter initial={3} />
             </section>
         </div>
     </Layout>;
