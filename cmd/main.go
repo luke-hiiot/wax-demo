@@ -23,11 +23,11 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	// 提供静态文件服务
-	r.Static("/static", "./static")
+	// 提供静态文件服务（对标 Next.js public）
+	r.StaticFile("/styles.css", "./public/styles.css")
 
 	// 指定视图文件位置
-	viewsFS := os.DirFS("./views")
+	viewsFS := os.DirFS("./src/app")
 
 	// 实例化 WAX 引擎
 	viewResolver := wax.NewFsViewResolver(viewsFS)
@@ -39,13 +39,13 @@ func main() {
 		showMessage := c.Query("message")
 
 		err := renderer.Render(c.Writer,
-			// 渲染 Hello 视图
-			"Hello",
+			// 渲染 Next.js src/app/page.tsx 对应视图
+			"page",
 			// 传递模型（视图参数）
 			map[string]any{
 				"name":           "World",
 				"message":        "Welcome to WAX + Gin demo!",
-				"cssUrl":         "/static/css/style.css",
+				"cssUrl":         "/styles.css",
 				"showMessage":    showMessage,
 				"recentMessages": messages,
 			})

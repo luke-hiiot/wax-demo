@@ -1,8 +1,8 @@
-import Layout from "./layout.tsx";
+import Layout from "./layout";
 import FruitList from "../components/FruitList";
 import RecentMessages from "../components/RecentMessages";
 
-export default function Hello(model: {
+export default function Page(model: {
     name: string,
     message: string,
     cssUrl: string,
@@ -12,7 +12,7 @@ export default function Hello(model: {
     return <Layout title="WAX + Gin Demo" cssUrl={model.cssUrl}>
         <div class="card space-y-8">
             <section class="space-y-2">
-                <p class="text-sm font-semibold uppercase tracking-widest text-brand">Wax + Tailwind</p>
+                <p class="text-sm font-semibold uppercase tracking-widest text-sky-500">Wax + Tailwind</p>
                 <h1 class="text-4xl font-semibold text-slate-900">Hello, {model.name}!</h1>
                 <p class="text-lg text-slate-600">{model.message}</p>
             </section>

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "go run cmd/main.go",
-    "dev:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --watch",
-    "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --minify",
+    "dev:css": "tailwindcss -i ./src/app/globals.css -o ./public/styles.css --watch",
+    "build:css": "tailwindcss -i ./src/app/globals.css -o ./public/styles.css --minify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

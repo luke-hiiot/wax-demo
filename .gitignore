@@ -18,7 +18,6 @@ build/
 .out/
 _output/
 _deploy/
-public/
 _site/
 
 # Runtime data
