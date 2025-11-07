@@ -29,14 +29,34 @@ func main() {
 
 	// 提供静态文件服务
 	r.Static("/static", "./public")
+	r.Static("/images", "./public/images")
 
 	// 指定视图文件位置（对标 Next.js src/ 约定）
 	viewRoot := "./src"
 	viewsFS := os.DirFS(viewRoot)
 
 	// 实例化 WAX 引擎
+	// 在生产环境中禁用开发优化
+	isDev := os.Getenv("WAX_ENV") != "production"
 	viewResolver := wax.NewFsViewResolver(viewsFS)
-	renderer := wax.New(viewResolver)
+	
+	// 仅在开发环境中启用缓存目录
+	var options []wax.Option
+	if isDev {
+		options = append(options, wax.WithCacheDir("./.wax-cache"))
+	}
+	renderer := wax.New(viewResolver, options...)
+
+	// 仅在开发环境启用预编译优化
+	if isDev {
+		// 预编译所有页面以提高启动速度
+		log.Println("开始预编译页面...")
+		if err := precompileViews(renderer, viewResolver); err != nil {
+			log.Printf("预编译警告: %v", err)
+		} else {
+			log.Println("页面预编译完成")
+		}
+	}
 
 	appDir := filepath.Join(viewRoot, "app")
 	routes, err := discoverRoutes(appDir)
@@ -130,6 +150,41 @@ var pageModelProviders = map[string]func(*gin.Context) map[string]any{
 			"recentMessages": messages,
 		}
 	},
+}
+
+// 预编译所有页面以提高启动速度
+func precompileViews(renderer *wax.Engine, viewResolver wax.ViewResolver) error {
+	// 定义需要预编译的页面
+	pages := []string{
+		"app/page",
+		"app/layout",
+		"components/FruitList",
+		"components/RecentMessages",
+		"components/InteractiveCounter",
+	}
+	
+	// 创建一个假的 writer 用于预编译
+	fakeWriter := &fakeWriter{}
+	
+	// 预编译每个页面
+	for _, page := range pages {
+		log.Printf("预编译页面: %s", page)
+		// 使用空模型进行预编译
+		model := map[string]any{}
+		if err := renderer.Render(fakeWriter, page, model); err != nil {
+			// 记录错误但不中断预编译过程
+			log.Printf("预编译页面 %s 时出错: %v", page, err)
+		}
+	}
+	
+	return nil
+}
+
+// fakeWriter 实现 io.Writer 接口，用于预编译时丢弃输出
+type fakeWriter struct{}
+
+func (fw *fakeWriter) Write(p []byte) (n int, err error) {
+	return len(p), nil
 }
 
 func discoverRoutes(appDir string) ([]routeDef, error) {
