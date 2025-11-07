@@ -93,3 +93,5 @@ config/credentials.yml
 connect.lock
 # render
 render_build_logs/
+
+.wax-cache/
