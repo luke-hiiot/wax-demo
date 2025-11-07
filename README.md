@@ -2,10 +2,10 @@
 
 ## Next.js 16 `src/` 模式对齐
 
-- 视图与路由：使用 `src/app` 目录，`layout.tsx` 对标 Next.js 根布局，`page.tsx` 作为 `/` 路由页面。可在 `src/components` 中共置 UI 组件。
-- 静态资源：所有公共文件放在 `public/`，Gin 通过 `/styles.css` 暴露 Tailwind 产物，语义上对应 Next.js `public/styles.css`。
+- 视图与路由：使用 `src/app` 目录，程序启动时会自动扫描所有 `**/page.tsx` 并注册对应的 HTTP 路由（含动态段 `[id]`/`[...slug]`）。`layout.tsx` 对标 Next.js 根布局，`page.tsx` 作为 `/` 路由页面，可在 `src/components` 中共置 UI 组件。
+- 静态资源：所有公共文件放在 `public/`，Gin 通过 `r.Static("/static", "./public")` 暴露整个目录，在页面中以 `/static/*` 访问（如 `/static/styles.css`）。
 - Tailwind：入口文件为 `src/app/globals.css`，脚本会输出到 `public/styles.css` 并在 `layout.tsx` 中引用。
-- 服务器：WAX 直接加载 `./src/app`，因此新增路由时仅需按 Next.js 目录层级新增 `page.tsx` 文件并在 `renderer.Render` 中指定同名视图。
+- 服务器：WAX 直接加载 `./src`，`cmd/main.go` 中的 `discoverRoutes` 会自动把 `src/app/**/page.tsx` 绑定到 Gin 路由；新增页面无需手动改 Go 代码，只需根据目录结构放置 `page.tsx`。
 
 ## 本地运行
 
